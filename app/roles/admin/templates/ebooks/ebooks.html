@@ -1,0 +1,59 @@
+{% set title = "eBooks List" %}
+{% set curPage = "items" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body">
+      <a href="add" class="btn btn-sm btn-primary mb-4">+ Add eBook</a>
+
+      <div class="table-responsive">
+        <table class="table table-striped p-2" id="table">
+          <thead>
+            <tr>
+              <th style="width:10%">Sr No</th>
+              <th style="width:8%">Image</th>
+              <th>eBook Id</th>
+              <th>Title</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+            <tr>
+              <td>{{loop.index}}</td>
+              <td>
+                <a href="{{url_for('static',filename='uploads/ebooks/'+item['image_filename'])}}" target="_blank">
+                  <img src="{{url_for('static',filename='uploads/ebooks/'+item['image_filename'])}}"
+                    alt="{{item['title']}}" style="width: 100%;" />
+                </a>
+              </td>
+              <td>
+                {{item['id']}}
+              </td>
+              <td>
+                {{item['title']}}
+              </td>
+              <td>
+                <a href="{{item['_id']}}/view/" class="btn btn-sm btn-info">View</a>
+                <a href="{{item['_id']}}/edit/" class="btn btn-sm btn-info">Edit</a>
+                <a href="{{item['_id']}}/delete/"
+                  onclick="return confirm('Are you sure? do you want to remove this ebook')"
+                  class="btn btn-sm btn-danger">Delete</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

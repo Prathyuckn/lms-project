@@ -1,0 +1,6 @@
+{"$unwind": {"path": "$out_location", "preserveNullAndEmptyArrays": True}},
+
+${{'%0.2f'%item['late_fee']|float}}
+
+TO DO LIST
+  

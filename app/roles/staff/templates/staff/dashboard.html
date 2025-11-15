@@ -1,0 +1,19 @@
+{% set title = "Dashboard" %}
+{% set curPage = "staffHome" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body">
+      <h2 class="text-center">Welcome {{current_user.fullname}}</h2>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

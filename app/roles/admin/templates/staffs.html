@@ -1,0 +1,55 @@
+{% set title = "Staffs" %}
+{% set curPage = "staffs" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body">
+      <a href="add" class="btn btn-sm btn-primary mb-2">+ Add Staff</a>
+
+      <div class="table-responsive">
+        <table class="table table-striped p-2" id="table">
+          <thead>
+            <tr>
+              <th>Sr No</th>
+              <th>Staff id</th>
+              <th>Firstname</th>
+              <th>Lastname</th>
+              <th>Email</th>
+              <th>Dob</th>
+              <th>Mobile</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in staffs %}
+            <tr>
+              <td>{{loop.index}}</td>
+              <td>{{item['staff_id']}}</td>
+              <td>{{item['firstname']}}</td>
+              <td>{{item['lastname']}}</td>
+              <td>{{item['email']}}</td>
+              <td>{{item['dob']}}</td>
+              <td>{{item['mobile']}}</td>
+              <td>
+                <a href="{{item['staff_id']}}/edit" class="btn btn-sm btn-info">Edit</a>
+                {# <a href="{{item['staff_id']}}/delete"
+                  onclick="return confirm('Are you sure? do you want to remove this staff')"
+                  class="btn btn-sm btn-danger">Delete</a> #}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

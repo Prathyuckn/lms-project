@@ -1,0 +1,65 @@
+{% set title = "Transfer Items - "+page %}
+{% set curPage = "transferItems" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body p-2">
+      <div class="my-4" id="reserved_items">
+
+        <div class="d-flex gap-3 mb-3 justify-content-center">
+          <a href="/staff/transfer-items/"
+            class="btn btn-sm btn-outline-success w-25 {{'active' if page=='Pending'}}">Pending</a>
+          <a href="{{request.uri}}?in_transit=true"
+            class="btn btn-sm btn-outline-success w-25 {{'active' if page=='In Transit'}}">In
+            Transit</a>
+          <a href="{{request.uri}}?completed=true"
+            class="btn btn-sm btn-outline-success w-25 {{'active' if page=='Completed'}}">Completed</a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered border" id="table">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>RFID</th>
+                <th>Title</th>
+                <th>Original&nbsp;Branch</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for item in items%}
+              <tr>
+                <td>{{loop.index}}</td>
+                <td>{{item['library_item']['item_type']}}</td>
+                <td>{{item['copy']['rfid']}}</td>
+                <td>{{item['library_item']['title']}}</td>
+                <td>{{item['to_branch']['name']}} ({{item['to_branch']['branch_id']}})</td>
+                <td>{{item['status']}}</td>
+                <td>
+                  {%if item['status'] == 'pending'%}
+                  <a href="/staff/transfer?transfer_id={{item['_id']}}&_copy_id={{item['copy']['_id']}}"
+                    class="btn btn-sm btn-warning">Transfer</a>
+                  {%endif%}
+                </td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

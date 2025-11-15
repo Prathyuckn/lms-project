@@ -1,0 +1,62 @@
+{% set title = item["title"]+" - Copies" %}
+{% set curPage = "items" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body">
+
+      <div class="d-flex mb-4 gap-2">
+        <a href="/admin/library-items/{{item['item_type']}}" class="btn btn-sm btn-warning">Back to
+          {{item['item_type']}}s</a>
+        <a href="add" class="btn btn-sm btn-primary">+ Add Copy</a>
+      </div>
+
+
+      <div class="table-responsive">
+        <table class="table table-striped p-2" id="table">
+          <thead>
+            <tr>
+              <th style="width:10%">Sr No</th>
+              <th>RFID</th>
+              <th>Branch</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in copies %}
+            <tr>
+              <td>{{loop.index}}</td>
+              <td>
+                {{item["rfid"]}}
+              </td>
+              <td>
+                {{item['original_branch']["name"]}}
+              </td>
+              <td>
+                {{item["status"]}}
+              </td>
+              <td>
+                <a href="{{item['_id']}}/" class="btn btn-sm btn-primary">View</a>
+                <a href="{{item['_id']}}/edit/" class="btn btn-sm btn-info">Edit</a>
+                <a href="{{item['_id']}}/delete/"
+                  onclick="return confirm('Are you sure? do you want to remove this staff')"
+                  class="btn btn-sm btn-danger">Delete</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

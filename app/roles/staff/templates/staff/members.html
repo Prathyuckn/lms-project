@@ -1,0 +1,68 @@
+{% set title = "View All Approved Members" %}
+{% set curPage = "members" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body">
+
+
+      <div class="table-responsive">
+        <table class="table table-striped p-2" id="table">
+          <thead>
+            <tr>
+              <th>Sr No</th>
+              <th>Member ID</th>
+              <th>Firstname</th>
+              <th>Lastname</th>
+              <th>Contact No</th>
+              <th>Address</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in members %}
+            <tr>
+              <td>{{loop.index}}</td>
+              <td>
+                {{item['member_id']}}
+              </td>
+              <td>
+                {{item['firstname']}}
+              </td>
+              <td>
+                {{item['lastname']}}
+              </td>
+              <td>
+                {{item['contact_no']}}
+              </td>
+              <td>
+                {{item['address']}}
+              </td>
+              <td>
+                {{item['status']}}
+              </td>
+              <td>
+                <div class="d-flex gap-2">
+                  <a href="/staff/members/{{item['member_id']}}/{{status}}/" class="btn btn-sm btn-primary">View</a>
+
+
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

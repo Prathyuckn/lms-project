@@ -1,0 +1,49 @@
+{% set title = "Profile" %}
+{% set curPage = "memberProfile" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body">
+      <div class="w-50 border p-3 m-auto">
+        <form class="g-3" action="{{request.url}}" method="post" id="memberRegistrationForm">
+          <div class="mt-3 mb-3">
+            <label for="firstname" class="form-label required text-secondary">First Name</label>
+            <input type="text" class="form-control" id="firstname" name="firstname" value="{{member['firstname']}}"
+              required autofocus />
+          </div>
+
+          <div class="mt-3 mb-3">
+            <label for="lastname" class="form-label required text-secondary">Last Name</label>
+            <input type="text" class="form-control" id="lastname" name="lastname" value="{{member['lastname']}}"
+              required />
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label required text-secondary">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{member['email']}}" readonly />
+          </div>
+
+          <div class="mb-3">
+            <label for="contact_no" class="form-label required text-secondary">Contact No</label>
+            <input type="text" class="form-control" id="contact_no" name="contact_no" value="{{member['contact_no']}}"
+              required />
+          </div>
+
+          <div class="mb-3">
+            <label for="address" class="form-label required text-secondary">Address</label>
+            <input type="text" class="form-control" id="address" name="address" value="{{member['address']}}"
+              required />
+          </div>
+          <input type="submit" class="btn btn-primary form-control" value="Update Profile" name="member_profile" />
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}

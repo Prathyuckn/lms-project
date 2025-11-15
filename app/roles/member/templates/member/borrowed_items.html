@@ -1,0 +1,68 @@
+{% set title = "Borrowed Items" %}
+{% set curPage = "borrowedItems" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body p-2">
+
+      <div class="my-4" id="borrowed_items">
+
+        <div class="d-flex mb-3 gap-3">
+          <a href="/member/borrowed-items/"
+            class="btn btn btn-{{'success' if not returned else 'outline-success'}}">Pending</a>
+          <a href="?returned=true" class="btn btn btn-{{'success' if returned else 'outline-success'}}">Returned</a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered border" id="table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>RFID</th>
+                <th>Borrowed&nbsp;on</th>
+                <th>Due&nbsp;date</th>
+                <th>Delayed&nbsp;Days</th>
+                <th>Late&nbsp;Fee</th>
+                <th>Renewals&nbsp;Left</th>
+                <th>Returned&nbsp;on</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for item in items%}
+
+              <tr>
+                <td>{{item['item_type']}}</td>
+                <td>{{item['item']['title']}}</td>
+                <td>{{item['rfid']}}</td>
+                <td>{{item['borrowed_on'].strftime('%Y-%m-%d')}}</td>
+                <td>{{item['due_date'].strftime('%Y-%m-%d')}}</td>
+                <td>{{item['delayed_days']}}</td>
+                <td>{{item['late_fee']}}</td>
+                <td>{{item['renewals_left']}}</td>
+                <td>{{item['return_date'].strftime('%Y-%m-%d') if item['return_date']}}</td>
+                <th>
+                  {%if not item['returned'] and item['renewals_left'] > 0 and item['due_date'] > today%} <a
+                    href="{{request.uri}}{{item['_id']}}/renew/" class="btn btn-sm btn-primary">Renew</a>
+                  {%endif%}
+                </th>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% set title = "Transaction History" %}
+{% set curPage = "transactions" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body p-2">
+      <div class="my-4" id="transactions">
+
+        <div class="table-responsive">
+          <table class="table table-bordered border" id="table">
+            <thead>
+              <tr>
+                <th>Transaction&nbsp;ID</th>
+                <th>Date</th>
+                <th>Transaction&nbsp;Type</th>
+                <th>Member&nbsp;Id</th>
+                <th>Item&nbsp;Type</th>
+                <th>Item</th>
+                <th>Branch</th>
+                <th>Paid&nbsp;Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for item in transactions%}
+              <tr>
+                <td>#{{item['transaction_id']}}</td>
+                <td>{{item['transaction_date'].strftime('%Y-%m-%d')}}</td>
+                <td>{{item['transaction_type']}}</td>
+                <td>{{item['member']['firstname']}} {{item['member']['lastname']}}</td>
+                <td>{{item['library_item']['item_type']}}</td>
+                <td>{{item['library_item']['title']}}</td>
+                <td>{{item['branch_details'][0]['name']}}</td>
+                <td>$ {{'%.02f'%item['paid_amount']|float if item['paid_amount'] else 0.0}}</td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

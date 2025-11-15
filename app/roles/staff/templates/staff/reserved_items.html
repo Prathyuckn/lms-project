@@ -1,0 +1,66 @@
+{% set title = "Reserved Items" %}
+{% set curPage = "reservedItems" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body p-2">
+
+      <div class="my-4" id="reserved_items">
+
+        <div class="table-responsive">
+          <table class="table table-bordered border" id="table">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th style="width: 8%;">Image</th>
+                <th>Member&nbsp;Id</th>
+                <th>Member&nbsp;Name</th>
+                <th>Item Type</th>
+                <th>Item Title</th>
+                <th>Reserved On</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for item in items%}
+              {% set image = item['item_type']+"s/"+item['image_filename'] %}
+              <tr>
+                <td>{{loop.index}}</td>
+                <td>
+                  <a href="{{url_for('static',filename='uploads/'+image)}}" target="_blank">
+                    <img src="{{url_for('static',filename='uploads/'+image)}}" alt="{{item['title']}}"
+                      style="width: 100%;" />
+                  </a>
+                </td>
+                <td>{{item['member_id']}}</td>
+                <td>{{item['member_name']}}</td>
+                <td>{{item['item_type']}}</td>
+                <td>{{item['item_title']}}</td>
+                <td>{{item['reserved_date'].strftime('%Y-%m-%d')}}</td>
+                <td>{{'Available' if item['item_available']}}</td>
+                <td>
+                  {%if item['item_available']%}
+                  <a href="/staff/check-out?m={{item['member_id']}}&r={{item['rfid'][0]}}"
+                    class="btn btn-sm btn-warning">Checkout</a>
+                  {%endif%}
+                </td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

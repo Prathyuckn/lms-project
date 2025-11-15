@@ -1,0 +1,82 @@
+{% set title = "Book Details" %}
+{% set curPage = "items" %}
+{% extends "base.html" %}
+
+{% block css %}
+<style>
+  table {
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body p-3">
+      <button onclick="history.back()" class="btn btn-sm btn-warning">Go Back</button>
+
+      <div class="row">
+        <div class="col-sm-10 p-4">
+          <table class="w-100">
+            <tr>
+              <th style="width: 20%;">Book Id</th>
+              <td> : </td>
+              <td>{{item['id']}}</td>
+            </tr>
+            <tr>
+              <th style="width: 20%;">Title</th>
+              <td> : </td>
+              <td>{{item['title']}}</td>
+            </tr>
+            <tr>
+              <th>Item Type</th>
+              <td> : </td>
+              <td>{{item['item_type']}}</td>
+            </tr>
+            <tr>
+              <th>Author</th>
+              <td> : </td>
+              <td>{{item['author']}}</td>
+            </tr>
+            <tr>
+              <th>Publisher</th>
+              <td> : </td>
+              <td>{{item['publisher']}}</td>
+            </tr>
+            <tr>
+              <th>ISBN</th>
+              <td> : </td>
+              <td>{{item['isbn']}}</td>
+            </tr>
+            <tr>
+              <th>Categories</th>
+              <td> : </td>
+              <td>{{",".join(item['categories'])}}</td>
+            </tr>
+            <tr>
+              <th>Availability Type</th>
+              <td> : </td>
+              <td>{{item['availability_type']}}</td>
+            </tr>
+
+          </table>
+
+        </div>
+        <div class="col-sm-2">
+          <img src="{{url_for('static',filename='uploads/books/'+item['image_filename'])}}" alt="{{item['title']}}"
+            style="width: 100%;" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

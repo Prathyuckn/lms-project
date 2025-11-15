@@ -1,0 +1,36 @@
+{% set title = "Select Branch To Checkout" %}
+{% set curPage = "checkout" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body p-2">
+
+      <form action="{{request.uri}}" method="post">
+
+        <div class="d-flex gap-2 my-4">
+          <select name="branch_id" id="branch_id" class="form-control w-50">
+            <option value="">-- Select --</option>
+            {%for branch in branches%}
+            <option value="{{branch['branch_id']}}">{{branch['name']}}
+            </option>
+            {%endfor%}
+          </select>
+          <button class="btn btn-success w-50">Select Branch</button>
+        </div>
+
+      </form>
+
+
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

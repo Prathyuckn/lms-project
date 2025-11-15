@@ -1,0 +1,71 @@
+{% set title = "Books List" %}
+{% set curPage = "items" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body">
+
+      <div class="table-responsive">
+        <table class="table table-striped p-2" id="table">
+          <thead>
+            <tr>
+              <th style="width:7%">Sr No</th>
+              <th style="width:5%">Image</th>
+              <th>Book Id</th>
+              <th>Title</th>
+              <th>Availability</th>
+              <th>Total&nbsp;Copies</th>
+              <th>Available&nbsp;Copies</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for item in items %}
+            <tr>
+              <td>{{loop.index}}</td>
+              <td>
+                {%if item['image_filename']%}
+                <a href="{{url_for('static',filename='uploads/books/'+item['image_filename'])}}" target="_blank">
+                  <img src="{{url_for('static',filename='uploads/books/'+item['image_filename'])}}"
+                    alt="{{item['title']}}" style="width: 100%;" />
+                </a>
+                {%endif%}
+              </td>
+              <td>
+                {{item['id']}}
+              </td>
+              <td>
+                {{item['title']}}
+              </td>
+              <td>
+                {{item['availability_type']}}
+              </td>
+              <td>
+                {{item['total_copies']}}
+              </td>
+              <td>
+                {{item['available_copies']}}
+              </td>
+              <td>
+                <a href="{{item['_id']}}/view/" class="btn btn-sm btn-info">View</a>
+                <a href="{{item['_id']}}/copies/" class="btn btn-sm btn-warning">Copies</a>
+              </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

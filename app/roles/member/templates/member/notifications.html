@@ -1,0 +1,44 @@
+{% set title = "Notification History" %}
+{% set curPage = "notifications" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body p-2">
+      <div class="my-4" id="notifications">
+        <div class="container mt-5">
+          <h1 class="mb-4">Notifications</h1>
+          <div class="list-group">
+            <!-- Notification Thread -->
+            {%for item in notifications%}
+            <div class="list-group-item mb-3 shadow bg-primary rounded-pill px-5">
+              <div class="d-flex align-items-center mb-2 gap-2">
+                <img src="https://placehold.co/40x40/green/white?text=INFO" class="rounded-circle me-3" alt="User">
+                <div>
+                  <span class="text-muted ms-2">{{time(item['date'])}}</span>
+                </div>
+                <div>
+                  <a href="{{request['uri']}}{{item['_id']}}/delete/" class="btn btn-sm btn-danger">Delete</a>
+                </div>
+              </div>
+              <p class="text-light">{{item['message']|safe}}</p>
+
+            </div>
+            {%endfor%}
+
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+# Byte-compiled files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environment
+venv/
+.env/
+.venv/
+env/
+
+# Flask-specific
+instance/
+*.db
+*.sqlite3
+
+# Logs
+*.log
+logs/
+*.pid
+
+# Config files
+.env
+config.py
+config.json
+secrets.json
+
+# MongoDB-related files
+dump/
+*.bson
+*.lock
+*.json
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Caches
+.cache/
+*.pyc
+*.pyo
+__pycache__/
+
+# Testing and debugging
+nosetests.xml
+coverage.xml
+*.cover
+*.pytest_cache/
+.cache
+sample_books.json
+
+# Editors/IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini

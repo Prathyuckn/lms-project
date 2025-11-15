@@ -1,0 +1,75 @@
+{% set title = 'Add Book' if not item else 'Update Book' %}
+{% set curPage = "items" %}
+{% extends "base.html" %} {% block content %}
+
+<div class="container">
+  <h5 class="page_title text-center border-bottom border-primary pb-2">
+    {{title}}
+  </h5>
+
+  <div class="card shadow">
+    <div class="card-body">
+      <a href="/admin/library-items/{{type}}" class="btn btn-sm btn-warning">Back to
+        {{type}}s</a>
+
+      <div class="w-50 m-auto p-4 border border-1">
+        <form action="{{request.url}}" id="bookForm" enctype="multipart/form-data" method="post">
+          <div class="mb-3">
+            <label for="id" class="form-label">Book Id</label>
+            <input type="text" class="form-control" id="id" name="id" value="{{item['id']}}" required autofocus />
+          </div>
+
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{item['title']}}" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="item_type" class="form-label">Item Type</label>
+            <input type="text" class="form-control" id="item_type" name="item_type" value="book" readonly />
+          </div>
+
+          <div class="mb-3">
+            <label for="author" class="form-label">Author</label>
+            <input type="text" class="form-control" id="author" name="author" value="{{item['author']}}" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="publisher" class="form-label">Publisher</label>
+            <input type="text" class="form-control" id="publisher" name="publisher" value="{{item['publisher']}}"
+              required />
+          </div>
+
+          <div class="mb-3">
+            <label for="isbn" class="form-label">ISBN</label>
+            <input type="text" class="form-control" id="isbn" name="isbn" value="{{item['isbn']}}" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="categories" class="form-label">Categories</label>
+            <input type="text" class="form-control" id="categories" name="categories"
+              value="{{','.join(item['categories'])}}" required placeholder="eg: fiction, drama" />
+          </div>
+
+          <div class="mb-3">
+            <label for="isbn" class="form-label">Cover Image</label>
+            <input type="file" class="form-control" name="image" id="image" {{'required' if not item['id']}}>
+            {%if item['id']%}
+            <input type="hidden" value="{{item['image_filename']}}" name="image_filename">
+            <a class="d-inline-block m-2" href="{{url_for('static',filename='uploads/books/'+item['image_filename'])}}"
+              target="_blank">view image</a>
+            {%endif%}
+          </div>
+
+          <div class="mb-3">
+            <input type="hidden" name="item_type" value="book" />
+            <input type="hidden" name="availability_type" value="Physical" />
+            <input type="submit" class="btn btn-primary form-control" value="Save Book" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

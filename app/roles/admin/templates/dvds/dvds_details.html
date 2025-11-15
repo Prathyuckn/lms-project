@@ -1,0 +1,67 @@
+{% set title = "Dvd Details" %}
+{% set curPage = "items" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body">
+
+      <div class="row">
+        <div class="col-sm-10 p-4 border">
+          <table class="w-100">
+            <tr>
+              <th style="width: 20%;">DVD Id</th>
+              <td> : </td>
+              <td>{{item['id']}}</td>
+            </tr>
+            <tr>
+              <th style="width: 20%;">Title</th>
+              <td> : </td>
+              <td>{{item['title']}}</td>
+            </tr>
+            <tr>
+              <th>Item Type</th>
+              <td> : </td>
+              <td>{{item['item_type']}}</td>
+            </tr>
+            <tr>
+              <th>Director</th>
+              <td> : </td>
+              <td>{{item['director']}}</td>
+            </tr>
+            <tr>
+              <th>Production Year</th>
+              <td> : </td>
+              <td>{{item['production_year']}}</td>
+            </tr>
+            <tr>
+              <th>Categories</th>
+              <td> : </td>
+              <td>{{",".join(item['categories'])}}</td>
+            </tr>
+            <tr>
+              <th>Availability Type</th>
+              <td> : </td>
+              <td>{{item['availability_type']}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-sm-2">
+          <div class="d-flex flex-column gap-3 align-items-center">
+            <img src="{{url_for('static',filename='uploads/dvds/'+item['image_filename'])}}" alt="{{item['title']}}"
+              style="width: 100%;" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>LMS | {{title}}</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <!-- jQuery dataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}" />
+
+    {% block css %} {% endblock %}
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar  -->
+      <nav id="sidebar">
+        <div class="sidebar-header">
+          <h5 class="text-center">LMS</h5>
+        </div>
+
+        <ul class="list-unstyled components">
+          <p>Menus</p>
+
+          {% if current_user.is_authenticated and current_user.role == 'admin'
+          %}
+
+          <li class="{{'active' if curPage=='adminHome'}}">
+            <a href="/admin/dashboard/"><i class="fa-solid fa-gauge-high fa-fw me-1"></i> Dashboard</a>
+          </li>
+
+          <li class="{{'active' if curPage=='checkout'}}">
+            <a href="/admin/select-branch/check-out"><i class="fa-solid fa-share fa-fw me-1"></i> Check-out</a>
+          </li>
+
+          <li class="{{'active' if curPage=='returnFilter'}}">
+            <a href="/admin/filter/return/"><i class="fa-solid fa-reply fa-fw me-1"></i> Return Item</a>
+          </li>
+
+          <li class="{{'active' if curPage=='staffs'}}">
+            <a href="/admin/staffs">
+              <i class="fa-solid fa-users fa-fw me-1"></i> Staffs</a>
+          </li>
+
+          <li class="{{'active' if curPage=='branches'}}">
+            <a href="/admin/branches"><i class="fa-solid fa-map-pin fa-fw me-1"></i> Branches</a>
+          </li>
+
+          <li class="{{'active' if curPage=='items'}}">
+            <a href="#itemsSubMenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+              <i class="fa-solid fa-sitemap fa-fw me-1"></i> Library Items</a>
+            <ul class="collapse list-unstyled" id="itemsSubMenu">
+              {% for type in LibraryItemTypes %}
+              <li>
+                <a href="/admin/library-items/{{type.value}}">{{type.value}}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </li>
+
+          <li class="{{'active' if curPage=='members'}}">
+            <a href="#membersSubMenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
+                class="fa-solid fa-users-line fa-fw me-1"></i> Members</a>
+            <ul class="collapse list-unstyled" id="membersSubMenu">
+              <li>
+                <a href="/admin/members/pending/">Pending For Approval</a>
+              </li>
+              <li>
+                <a href="/admin/members/approved/">Approved</a>
+              </li>
+              <li>
+                <a href="/admin/members/blocked/">Blocked</a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="{{'active' if curPage=='reservedItems'}}">
+            <a href="/admin/reserved-items/">
+              <i class="fa-solid fa-square-check fa-fw me-1"></i>
+              Reserved Items</a>
+          </li>
+
+          <li class="{{'active' if curPage=='transferItems'}}">
+            <a href="/admin/transfer-items/">
+              <i class="fa-solid fa-book-journal-whills fa-fw me-1"></i>
+              Transfer Items</a>
+          </li>
+
+          <li class="{{'active' if curPage=='transactions'}}">
+            <a href="/admin/transactions/">
+              <i class="fa-solid fa-tent-arrow-left-right fa-fw me-1"></i>
+              Transactions</a>
+          </li>
+
+          {% endif %}
+
+          {% if current_user.is_authenticated and current_user.role
+          == 'staff' %}
+          <li class="{{'active' if curPage=='staffHome'}}">
+            <a href="/staff/dashboard/">
+              <i class="fa-solid fa-gauge-high fa-fw me-1"></i> Dashboard</a>
+          </li>
+
+          <li class="{{'active' if curPage=='checkout'}}">
+            <a href="/staff/filter/check-out"><i class="fa-solid fa-share fa-fw me-1"></i> Check-out</a>
+          </li>
+
+          <li class="{{'active' if curPage=='returnItems'}}">
+            <a href="/staff/filter/return/"><i class="fa-solid fa-reply fa-fw me-1"></i> Return Item</a>
+          </li>
+
+          <li class="{{'active' if curPage=='items'}}">
+            <a href="#itemsSubMenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
+                class="fa-solid fa-sitemap fa-fw me-1"></i> Library Items</a>
+            <ul class="collapse list-unstyled" id="itemsSubMenu">
+              {% for type in LibraryItemTypes %}
+              <li>
+                <a href="/staff/library-items/{{type.value}}">{{type.value}}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </li>
+
+          <li class="{{'active' if curPage=='members'}}">
+            <a href="/staff/members"><i class="fa-solid fa-gauge-high fa-fw me-1"></i> Members</a>
+          </li>
+
+          <li class="{{'active' if curPage=='reservedItems'}}">
+            <a href="/staff/reserved-items/">
+              <i class="fa-solid fa-square-check fa-fw me-1"></i>
+              Reserved Items</a>
+          </li>
+
+          <li class="{{'active' if curPage=='transferItems'}}">
+            <a href="/staff/transfer-items/">
+              <i class="fa-solid fa-book-journal-whills fa-fw me-1"></i>
+              Transfer Items</a>
+          </li>
+
+          <li class="{{'active' if curPage=='transferItems'}}">
+            <a href="/staff/transactions/">
+              <i class="fa-solid fa-book-journal-whills fa-fw me-1"></i>
+              Transactions</a>
+          </li>
+          {% endif %}
+
+
+          {% if current_user.is_authenticated and current_user.role
+          == 'member' %}
+          <li class="{{'active' if curPage=='dashboard'}}">
+            <a href="/member/dashboard/">
+              <i class="fa-solid fa-gauge-high fa-fw me-1"></i> Dashboard</a>
+          </li>
+
+          <li class="{{'active' if curPage=='items'}}">
+            <a href="/member/library-items/">
+              <i class="fa-solid fa-sitemap fa-fw me-1"></i> Library Items</a>
+          </li>
+
+          <li class="{{'active' if curPage=='borrowedItems'}}">
+            <a href="/member/borrowed-items/">
+              <i class="fa-solid fa-book-open fa-fw me-1"></i> Borrowed
+              Items</a>
+          </li>
+
+          <li class="{{'active' if curPage=='reservedItems'}}">
+            <a href="/member/reserved-items/">
+              <i class="fa-solid fa-square-check fa-fw me-1"></i>
+              Reserved Items</a>
+          </li>
+
+          <li class="{{'active' if curPage=='transactions'}}">
+            <a href="/member/transactions/">
+              <i class="fa-solid fa-tent-arrow-left-right fa-fw me-1"></i>
+              Transactions</a>
+          </li>
+
+          <li class="{{'active' if curPage=='memberProfile'}}">
+            <a href="/member/profile/">
+              <i class="fa-solid fa-user fa-fw me-1"></i>
+              Profile</a>
+          </li>
+
+          <li class="{{'active' if curPage=='changePassword'}}">
+            <a href="/member/change-password/">
+              <i class="fa-solid fa-lock fa-fw me-1"></i>
+              Change Password</a>
+          </li>
+
+          {# <li class="{{'active' if curPage=='profile'}}">
+            <a href="/member/profile"><i class="fa-solid fa-address-card fa-fw me-1"></i> My Profile</a>
+          </li>
+
+          <li class="{{'active' if curPage=='changePassword'}}">
+            <a href="/member/change-password"><i class="fa-solid fa-lock fa-fw me-1"></i> Change Password</a>
+          </li> #}
+          {% endif %}
+
+          <li>
+            <a href="/logout"><i class="fa-solid fa-right-from-bracket fa-fw me-1"></i>
+              Logout</a>
+          </li>
+        </ul>
+      </nav>
+      <!-- End of Sidebar  -->
+
+      <!-- Content -->
+      <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <button type="button" id="sidebarCollapse" class="btn btn-sm btn-primary-light">
+              <i class="fa-solid fa-left-right"></i>
+            </button>
+            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation">
+              <i class="fas fa-align-justify"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="nav navbar-nav ms-auto">
+                {% if current_user.is_authenticated and current_user.role
+                == 'member' %}
+                <li class="nav-item {{'active' if curPage=='notifications'}}">
+                  <a href="/member/notifications/" class="nav-link text-light" href="#">Notifications
+                  </a>
+                </li>
+                {%endif%}
+                <li class="nav-item active">
+                  <a class="nav-link text-light" href="#">Welcome! {{current_user.fullname}} ({{current_user.role}}
+                    {{current_user.branch_name}})
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        {% block content %} {% endblock %}
+      </div>
+      <!-- ./ End of Content -->
+    </div>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+      integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+      integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+      crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"></script>
+    <!-- Font Awesome JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js"></script>
+    <!-- jQuery DataTable -->
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <!-- jQuery validation -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+    <!-- jQuery Custom Scroller CDN -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- Custome file input -->
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    <!-- Toastr js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <!-- Custom Files -->
+    <script src="{{url_for('static', filename='js/validation.js')}}"></script>
+    <script src="{{url_for('static', filename='js/custom.js')}}"></script>
+    <script src="{{url_for('static', filename='js/toastr_notification.js')}}"></script>
+
+    <script>
+      // Load flashed messages into Toastr notifications
+      const flashedMessages = {{ get_flashed_messages(with_categories = true) | tojson }};
+      flashedMessages.forEach(msg => {
+        const [type, message, title] = msg[1];
+        showToastr(type, message, title);
+      });
+    </script>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#table").DataTable({
+          pageLength: 25,
+        });
+
+        $("#sidebar").mCustomScrollbar({
+          theme: "minimal",
+        });
+
+        $("#sidebarCollapse").on("click", function () {
+          $("#sidebar, #content").toggleClass("active");
+          $(".collapse.in").toggleClass("in");
+          $("a[aria-expanded=true]").attr("aria-expanded", "false");
+        });
+      });
+    </script>
+    {% block script %} {% endblock %}
+  </body>
+
+</html>

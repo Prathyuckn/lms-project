@@ -1,0 +1,53 @@
+{% set title = 'Add Branch' if not branch else 'Update Branch' %}
+{% set curPage = "branches" %}
+{% extends "base.html" %} {% block content %}
+
+<div class="container">
+  <h5 class="page_title text-center border-bottom border-primary pb-2">
+    {{title}}
+  </h5>
+
+  <div class="card shadow">
+    <div class="card-body">
+      <div class="w-50 m-auto p-4 border border-1">
+        <form action="{{request.url}}" id="branchForm" method="post">
+          <div class="mb-3">
+            <label for="branch_id" class="form-label">Branch Id</label>
+            <input type="text" class="form-control" id="branch_id" name="branch_id" value="{{branch['branch_id']}}"
+              required autofocus />
+          </div>
+
+          <div class="mb-3">
+            <label for="staff_id" class="form-label">Staff</label>
+            <select name="staff_id" id="staff_id" class="form-select" required>
+              <option value="">--select--</option>
+              {% for staff in staffs %}
+              <option value="{{staff._id}}" {{'selected' if str(branch['staff_id'])==str(staff._id) else '' }}>
+                {{staff.firstname}} {{staff.lastname}}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="name" class="form-label">Branch Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{branch['name']}}" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" class="form-control" id="location" name="location" value="{{branch['location']}}"
+              required />
+          </div>
+
+          <div class="mb-3">
+            <input type="hidden" name="branch_id" value="{{branch['_id']}}" />
+            <input type="submit" class="btn btn-primary form-control" value="Save Branch" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

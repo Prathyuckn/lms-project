@@ -1,0 +1,133 @@
+{% set title = "Checkout" %}
+{% set curPage = "checkout" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body p-2">
+
+      <form action="">
+        <div class="d-flex gap-2 mb-3">
+          <input type="text" class="form-control w-50" name="m" value="{{member_id}}" placeholder="Member ID">
+          <button class="btn btn-success w-50">GET MEMBER DETAILS</button>
+        </div>
+      </form>
+
+
+      {%if member%}
+      <div>
+        <table class="table table-bordered border">
+          <tr>
+            <th style="width: 20%;">Firstname</th>
+            <td>{{member["firstname"]}}</td>
+            <th style="width: 20%;">Lastname</th>
+            <td>{{member["lastname"]}}</td>
+          </tr>
+          <tr>
+            <th style="width: 20%;">Due Amount</th>
+            <td>${{'%0.2f'%member['due_amount']|float}}</td>
+            <th>Contact No</th>
+            <td>{{member["contact_no"]}}</td>
+          </tr>
+        </table>
+        <hr>
+
+        <div class="my-4" id="borrowed_items">
+          <h5>Borrowed Items</h5>
+          <hr>
+          <div class="table-responsive">
+            <table class="table table-bordered border" id="table1">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Name</th>
+                  <th>RFID</th>
+                  <th>Branch</th>
+                  <th>Borrowed&nbsp;on</th>
+                  <th>Due&nbsp;date</th>
+                  <th>Delayed Days</th>
+                  <th>Late Fee</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {%for item in member["borrowed_items"]%}
+
+                <tr>
+                  <td>{{item['item_type']}}</td>
+                  <td>{{item['item']['title']}}</td>
+                  <td>{{item['rfid']}}</td>
+                  <td>{{item['branch']['name']}}</td>
+                  <td>{{item['borrowed_on'].strftime('%Y-%m-%d')}}</td>
+                  <td>{{item['due_date'].strftime('%Y-%m-%d')}}</td>
+                  <td>{{item['delayed_days']}}</td>
+                  <td>$ {{'%.02f'%item['late_fee']|float}}</td>
+                  <th>
+                    <a href="/staff/return/{{item['copy_id']}}/{{member['member_id']}}"
+                      class="btn btn-sm btn-warning">Return</a>
+                  </th>
+                </tr>
+                {%endfor%}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      {%endif%}
+
+      <hr>
+
+      <h5>Available Library Items</h5>
+
+      <hr>
+      <form action="/staff/checkout-items" method="post">
+        <input type="hidden" name="member_id" value="{{member['member_id']}}">
+
+        <div class="table-responsive">
+          <table class="table table-bordered border" id="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Type</th>
+                <th>Title</th>
+                <th>RFID</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for item in copies%}
+              <tr>
+                <td>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="rfids" value="{{item['rfid']}}"
+                      id="{{item['rfid']}}">
+                    <label class="form-check-label" for="{{item['rfid']}}"></label>
+                  </div>
+                </td>
+                <td>{{item['library_item']['item_type']}}</td>
+                <td>{{item['library_item']['title']}}</td>
+                <td>{{item['rfid']}}</td>
+              </tr>
+              {%endfor%}
+
+            </tbody>
+          </table>
+        </div>
+
+        <button class="btn btn-sm btn-success">checkout</button>
+
+      </form>
+
+
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

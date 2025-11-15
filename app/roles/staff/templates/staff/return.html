@@ -1,0 +1,90 @@
+{% set title = "Return Item" %}
+{% set curPage = "returnItem" %}
+{% extends "base.html" %}
+
+{% block css %}
+<style>
+  table {
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body p-2">
+
+      <form action="{{request.uri}}">
+        <div class="d-flex gap-2 my-4">
+          <input type="text" class="form-control w-50" name="rfid" value="{{rfid}}" placeholder="RFID">
+          <button class="btn btn-success w-50">GET ITEM</button>
+        </div>
+      </form>
+
+      {%if data %}
+      <table class="table table-borderless">
+        <tr>
+          <th style="width:15%">Item Type</th>
+          <td>: {{data['library_item']['item_type']}}</td>
+          <th style="width:15%">Title</th>
+          <td>: {{data['library_item']['title']}}</td>
+        </tr>
+        <tr>
+          <th style="width:15%">Original Branch</th>
+          <td>: {{data['original_branch']['name']}}</td>
+          <th style="width:15%">Current Branch</th>
+          <td>: {{data['current_branch']['name']}}</td>
+        </tr>
+        <tr>
+          <th style="width:15%">Status</th>
+          <td>: {{data['status']}}</td>
+        </tr>
+      </table>
+
+      {%if data["member"]%}
+      <hr>
+      <h5>Borrower Details</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered border" id="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>MemberId</th>
+              <th>Borrowed&nbsp;on</th>
+              <th>Due&nbsp;date</th>
+              <th>Delayed Days</th>
+              <th>Late Fee</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{data['member']['firstname']}} {{data['member']['lastname']}}</td>
+              <td>{{data['member']['member_id']}}</td>
+              <td>{{data['borrowed']['borrowed_on'].strftime('%Y-%m-%d')}}</td>
+              <td>{{data['borrowed']['due_date'].strftime('%Y-%m-%d')}}</td>
+              <td>{{data['borrowed']['delayed_days']}}</td>
+              <td>$ {{'%.02f'%data['borrowed']['late_fee']|float}}</td>
+              <th>
+                <a href="/staff/return/{{data['borrowed']['copy_id']}}/{{data['member']['member_id']}}"
+                  class="btn btn-sm btn-warning">Return</a>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {%endif%}
+      {%endif%}
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

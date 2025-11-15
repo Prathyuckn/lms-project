@@ -1,0 +1,85 @@
+{% set title = title %}
+{% set curPage = "members" %}
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+  <h5 class="page_title text-center border-bottom border-primary pb-2">{{title}}</h5>
+
+  <div class="card shadow">
+    <div class="card-body">
+
+
+      <div class="table-responsive">
+        <table class="table table-striped p-2" id="table">
+          <thead>
+            <tr>
+              <th>Sr No</th>
+              <th>Member ID</th>
+              <th>Firstname</th>
+              <th>Lastname</th>
+              <th>Contact No</th>
+              <th>Address</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in members %}
+            <tr>
+              <td>{{loop.index}}</td>
+              <td>
+                {{item['member_id']}}
+              </td>
+              <td>
+                {{item['firstname']}}
+              </td>
+              <td>
+                {{item['lastname']}}
+              </td>
+              <td>
+                {{item['contact_no']}}
+              </td>
+              <td>
+                {{item['address']}}
+              </td>
+              <td>
+                <div class="d-flex gap-2">
+                  {%if status != 'pending'%}
+                  <a href="/admin/members/{{item['member_id']}}/{{status}}/" class="btn btn-sm btn-primary">View</a>
+                  {%endif%}
+                  <form action="{{request.url}}" method="post">
+                    <input type="hidden" name="member_id" value="{{item['_id']}}">
+
+                    {%if status == 'pending'%}
+                    <input type="hidden" name="update_status_to" value="approved">
+                    <button class="btn btn-sm btn-success">Approve</button>
+                    {%endif%}
+
+                    {%if status == 'approved'%}
+                    <input type="hidden" name="update_status_to" value="blocked">
+                    <button onclick="return confirm('Are you sure? do you want to block this member')"
+                      class="btn btn-sm btn-danger">Block</button>
+                    {%endif%}
+
+                    {%if status == 'blocked'%}
+                    <input type="hidden" name="update_status_to" value="approved">
+                    <button onclick="return confirm('Are you sure? do you want to unblock this member')"
+                      class="btn btn-sm btn-success">Unblock</button>
+                    {%endif%}
+
+                  </form>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
